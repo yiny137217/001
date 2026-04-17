@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- 浏览器标签上会显示的标题 -->
     <title>王冠东的小世界 🎵</title>
     <style>
         * {
@@ -12,7 +11,6 @@
             box-sizing: border-box;
         }
         body {
-            /* 柔和的渐变背景 */
             background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
             font-family: "微软雅黑", sans-serif;
             min-height: 100vh;
@@ -29,6 +27,16 @@
             border-radius: 20px;
             box-shadow: 0 8px 32px rgba(31, 38, 135, 0.15);
             backdrop-filter: blur(4px);
+        }
+        /* 新增的图片样式 */
+        .avatar {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 20px;
+            border: 4px solid #fff;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
         h1 {
             color: #2c3e50;
@@ -48,6 +56,9 @@
 </head>
 <body>
     <div class="container">
+        <!-- 这里是图片位置，我先帮你放了一张示例图 -->
+        <img class="avatar" src="https://picsum.photos/id/1005/300/300" alt="王冠东的头像">
+        
         <h1>👋 你好，我是王冠东！</h1>
         <p class="emoji">🎻 美声演唱爱好者 | 古筝玩家 | 音乐学习者</p>
         <p>这是我亲手做的第一个网站，超有成就感！✨</p>
