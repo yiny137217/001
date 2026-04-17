@@ -27,6 +27,7 @@
             border-radius: 20px;
             box-shadow: 0 8px 32px rgba(31, 38, 135, 0.15);
             backdrop-filter: blur(4px);
+            margin-top: 100px; /* 给导航栏留出空间，不遮挡内容 */
         }
         /* 新增的图片样式 */
         .avatar {
@@ -52,6 +53,30 @@
         .emoji {
             font-size: 24px;
         }
+
+        /* ========== 手机端导航修复（我加的，不影响你原来页面） ========== */
+        @media (max-width: 768px) {
+            nav {
+                width: 90% !important;
+                left: 5% !important;
+                transform: none !important;
+                padding: 12px !important;
+            }
+            nav a {
+                margin: 0 8px !important;
+                font-size: 14px !important;
+            }
+            .container {
+                padding: 25px 20px !important;
+                margin-top: 80px !important;
+            }
+            h1 {
+                font-size: 26px !important;
+            }
+            p {
+                font-size: 16px !important;
+            }
+        }
     </style>
 </head>
 <body>
@@ -59,28 +84,25 @@
         <a href="index.html" style="text-decoration: none; color: #2c3e50; margin: 0 15px; font-weight: bold;">首页</a>
         <a href="about.html" style="text-decoration: none; color: #2c3e50; margin: 0 15px; font-weight: bold;">关于我</a>
     </nav>
+
     <div class="container">
-        <!-- 这里是图片位置，我先帮你放了一张示例图 -->
         <img class="avatar" src="https://picsum.photos/id/1005/300/300" alt="王冠东的头像">
         
         <h1>👋 你好，我是王冠东！</h1>
         <p class="emoji">🎻 美声演唱爱好者 | 古筝玩家 | 音乐学习者</p>
         <p>这是我亲手做的第一个网站，超有成就感！✨</p>
         <p>欢迎来到我的音乐小天地~</p>
-    <!-- 示例音乐播放器（不用准备文件，直接能用） -->
-<div style="margin-top: 30px; text-align: center;">
-    <div style="display: inline-block; background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
-      <img src="https://picsum.photos/id/1005/150/150" alt="示例封面" style="width: 150px; height: 150px; border-radius: 10px; object-fit: cover; margin-bottom: 15px;">
-      <h3 style="color: #2c3e50; margin: 0 0 10px;">我的音乐分享</h3>
-      <audio controls style="width: 250px;">
-        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
-        你的浏览器不支持音频播放。
-      
-    </div>
-  </div>
-        
-    </div>
-</div>
+
+        <div style="margin-top: 30px; text-align: center;">
+            <div style="display: inline-block; background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                <img src="https://picsum.photos/id/1005/150/150" alt="示例封面" style="width: 150px; height: 150px; border-radius: 10px; object-fit: cover; margin-bottom: 15px;">
+                <h3 style="color: #2c3e50; margin: 0 0 10px;">我的音乐分享</h3>
+                <audio controls style="width: 250px;">
+                    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+                    你的浏览器不支持音频播放。
+                
+            </div>
+        </div>
     </div>
 </body>
 </html>
