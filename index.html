@@ -154,71 +154,79 @@
     </div>
 </div>
 
-<!-- 知晓云 SDK + 聊天功能 -->
 <script src="https://cdn.jsdelivr.net/npm/minapp-sdk@2.14.0/dist/sdk-v2.min.js"></script>
 <script>
-// 你的知晓云 ClientID
 const CLIENT_ID = '9b6f465864ad7e058539';
 const { BaaS } = MinApp;
-BaaS.init(CLIENT_ID);
+BaaS.init({
+  clientID: CLIENT_ID
+});
 
 const MessageTable = new BaaS.TableObject('chatmessage');
 const chatBox = document.getElementById('chatBox');
 const msgInput = document.getElementById('msgInput');
 const sendBtn = document.getElementById('sendBtn');
 
-// 发送消息
+// 发送函数
 async function send() {
-    const text = msgInput.value.trim();
-    if (!text) return;
+  const text = msgInput.value.trim();
+  if (!text) return;
 
+  try {
     const record = MessageTable.create();
     record.set('text', text);
     record.set('from', 'visitor');
     await record.save();
     msgInput.value = '';
+  } catch (e) {
+    alert("发送失败：" + e.message);
+  }
 }
 
+// 绑定事件
+sendBtn.onclick = send;
+msgInput.addEventListener("keydown", function (e) {
+  if (e.key === "Enter") {
+    e.preventDefault();
+    send();
+  }
+});
+
 // 渲染消息
-function addMsg(msg, isMe = false) {
-    const div = document.createElement('div');
-    div.style.marginBottom = '10px';
-    div.style.textAlign = isMe ? 'right' : 'left';
+function addMsg(msg) {
+  const div = document.createElement('div');
+  div.style.marginBottom = '10px';
+  div.style.textAlign = 'left';
 
-    const bubble = document.createElement('div');
-    bubble.style.padding = '10px 14px';
-    bubble.style.borderRadius = '14px';
-    bubble.style.display = 'inline-block';
-    bubble.style.maxWidth = '75%';
-    bubble.style.fontSize = '14px';
-    bubble.style.background = isMe ? '#d1c4e9' : '#e6f7ff';
-    bubble.textContent = msg.text;
+  const bubble = document.createElement('div');
+  bubble.style.padding = '10px 14px';
+  bubble.style.borderRadius = '14px';
+  bubble.style.display = 'inline-block';
+  bubble.style.maxWidth = '75%';
+  bubble.style.fontSize = '14px';
+  bubble.style.background = '#e6f7ff';
+  bubble.textContent = msg.text;
 
-    div.appendChild(bubble);
-    chatBox.appendChild(div);
-    chatBox.scrollTop = chatBox.scrollHeight;
+  div.appendChild(bubble);
+  chatBox.appendChild(div);
+  chatBox.scrollTop = chatBox.scrollHeight;
 }
 
 // 加载历史
 async function loadHistory() {
-    const query = new BaaS.Query();
-    query.orderBy('created_at');
-    const { data } = await MessageTable.find(query);
-    data.forEach(item => addMsg(item));
+  const query = new BaaS.Query();
+  query.orderBy('created_at');
+  const { data } = await MessageTable.find(query);
+  data.forEach(item => addMsg(item));
 }
 
 // 实时监听
 function listen() {
-    const realtime = MessageTable.watch();
-    realtime.on('create', (msg) => {
-        addMsg(msg);
-    });
+  const realtime = MessageTable.watch();
+  realtime.on('create', (msg) => {
+    addMsg(msg);
+  });
 }
-
-sendBtn.onclick = send;
-msgInput.addEventListener('keypress', e => {
-    if (e.key === 'Enter') send();
-});
 
 loadHistory();
 listen();
