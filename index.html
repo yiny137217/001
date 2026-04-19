@@ -33,9 +33,7 @@
             width: 100%;
             max-width: 600px;
         }
-        @keyframes fadeIn {
-            to { opacity: 1; }
-        }
+        @keyframes fadeIn { to { opacity: 1; } }
         .avatar {
             width: 150px;
             height: 150px;
@@ -57,9 +55,6 @@
             margin-bottom: 10px;
             line-height: 1.6;
         }
-        .emoji {
-            font-size: 24px;
-        }
         .music-card {
             margin-top: 30px;
             display: inline-block;
@@ -67,7 +62,6 @@
             padding: 20px;
             border-radius: 15px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
         }
         .music-cover {
             width: 150px;
@@ -76,151 +70,96 @@
             object-fit: cover;
             margin-bottom: 15px;
         }
-        audio {
-            width: 250px;
-        }
-        nav a {
-            transition: color 0.3s ease;
-        }
-        .music-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-        }
-
-        @media (max-width: 768px) {
-            nav {
-                width: 90% !important;
-                left: 5% !important;
-                transform: none !important;
-                padding: 12px !important;
-            }
-            nav a {
-                margin: 0 8px !important;
-                font-size: 14px !important;
-            }
-            .container {
-                padding: 25px 20px !important;
-                margin-top: 80px !important;
-            }
-            h1 {
-                font-size: 26px !important;
-            }
-            p {
-                font-size: 16px !important;
-            }
-        }
+        audio { width: 250px; }
     </style>
 </head>
 <body>
 
-<nav style="background: rgba(255,255,255,0.9); padding:15px 20px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); position: fixed; top: 20px; left: 50%; transform: translateX(-50%);">
-    <a href="index.html" style="text-decoration: none; color: #2c3e50; margin: 0 15px; font-weight: bold;">首页</a>
-    <a href="about.html" style="text-decoration: none; color: #2c3e50; margin: 0 15px; font-weight: bold;">关于我</a>
-</nav>
-
 <div class="container">
-    <img class="avatar" src="https://picsum.photos/id/1005/300/300" alt="王冠东的头像">
-    
+    <img class="avatar" src="https://picsum.photos/id/1005/300/300" alt="头像">
     <h1>👋 你好，我是王冠东！</h1>
-    <p class="emoji">🎻 美声演唱爱好者 | 古筝玩家 | 音乐学习者</p>
-    <p>这是我亲手做的第一个网站，超有成就感！✨</p>
+    <p>🎻 美声演唱爱好者 | 古筝玩家 | 音乐学习者</p>
     <p>欢迎来到我的音乐小天地~</p>
 
     <div class="music-card">
         <img class="music-cover" src="https://picsum.photos/id/1005/150/150" alt="音乐封面">
-        <h3 style="color: #2c3e50; margin: 0 0 10px;">我的音乐分享</h3>
+        <h3>我的音乐分享</h3>
         <audio controls>
             <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
             你的浏览器不支持音频播放。
-        
+        </audio>
     </div>
 
-    <!-- 纯前端聊天 -->
-    <div style="margin-top:35px;max-width:420px;margin-left:auto;margin-right:auto">
-        <h3 style="color:#2c3e50;margin-bottom:12px;font-size:18px">💬 在线聊天</h3>
-        
-        <div id="chatBox" style="height:280px;background:#fdfdff;border-radius:16px;padding:16px;overflow-y:auto;box-shadow:inset 0 2px 8px rgba(0,0,0,.05);border:1px solid #eee; text-align:left;">
-            <div style="margin-bottom:10px">
-                <div style="background:#e6f7ff;padding:10px 14px;border-radius:14px;display:inline-block;max-width:75%;font-size:14px">
-                    你好呀～欢迎来聊天 🎵
-                </div>
-            </div>
+    <!-- 🔥 多人实时在线聊天 -->
+    <div style="margin-top:40px;">
+        <h3 style="margin-bottom:10px;">💬 公共聊天室（所有人实时聊天）</h3>
+        <div style="margin-bottom:8px;">
+            <input type="text" id="username" placeholder="输入你的昵称" style="padding:8px;width:200px;border-radius:8px;border:1px solid #ddd;">
         </div>
-
-        <div style="display:flex;gap:8px;margin-top:10px;">
-            <input type="text" id="msgInput" placeholder="说点什么..." style="flex:1;padding:12px;border-radius:12px;border:1px solid #ddd;outline:0">
-            <button id="sendBtn" style="padding:0 16px;background:#5b7bd9;color:#fff;border:0;border-radius:12px;font-weight:700;cursor:pointer">发送</button>
+        <div id="chatBox" style="height:280px;background:#fff;border-radius:16px;padding:16px;overflow-y:auto;text-align:left;border:1px solid #eee;"></div>
+        <div style="display:flex;margin-top:10px;gap:8px;">
+            <input type="text" id="msgInput" placeholder="输入消息..." style="flex:1;padding:12px;border-radius:12px;border:1px solid #ddd;">
+            <button id="sendBtn" style="padding:0 16px;background:#5b7bd9;color:white;border:0;border-radius:12px;">发送</button>
         </div>
     </div>
 </div>
 
 <script>
+// ==============================================
+// 🔥 免费公共 WebSocket 实时聊天（所有人互通）
+// ==============================================
+const socket = new WebSocket('wss://echo.websocket.events');
 const chatBox = document.getElementById('chatBox');
 const msgInput = document.getElementById('msgInput');
 const sendBtn = document.getElementById('sendBtn');
+const username = document.getElementById('username');
 
-// 加载历史消息
-function loadHistory() {
-  const history = JSON.parse(localStorage.getItem('chatHistory') || '[]');
-  history.forEach(msg => addMsg(msg.text, msg.isMe));
+socket.onopen = () => addSystemMsg("✅ 已连接公共聊天室，可以聊天啦");
+
+socket.onmessage = (e) => {
+    try {
+        let data = JSON.parse(e.data);
+        addMsg(data.name, data.msg);
+    } catch(err) {
+        console.log("系统消息：", e.data);
+    }
+};
+
+function addMsg(name, text) {
+    let div = document.createElement('div');
+    div.style.marginBottom = '8px';
+    div.style.padding = '10px 14px';
+    div.style.background = '#f0f7ff';
+    div.style.borderRadius = '12px';
+    div.style.maxWidth = '85%';
+    div.innerHTML = `<strong>${name}</strong>：${text}`;
+    chatBox.appendChild(div);
+    chatBox.scrollTop = chatBox.scrollHeight;
 }
 
-// 保存消息
-function saveMsg(text, isMe) {
-  const history = JSON.parse(localStorage.getItem('chatHistory') || '[]');
-  history.push({ text, isMe });
-  localStorage.setItem('chatHistory', JSON.stringify(history));
+function addSystemMsg(text) {
+    let div = document.createElement('div');
+    div.style.color = '#888';
+    div.style.fontSize = '12px';
+    div.style.margin = '8px 0';
+    div.textContent = text;
+    chatBox.appendChild(div);
 }
 
-// 添加消息到界面
-function addMsg(text, isMe = false) {
-  const div = document.createElement('div');
-  div.style.marginBottom = '10px';
-  div.style.textAlign = isMe ? 'right' : 'left';
-
-  const bubble = document.createElement('div');
-  bubble.style.padding = '10px 14px';
-  bubble.style.borderRadius = '14px';
-  bubble.style.display = 'inline-block';
-  bubble.style.maxWidth = '75%';
-  bubble.style.fontSize = '14px';
-  bubble.style.background = isMe ? '#d1c4e9' : '#e6f7ff';
-  bubble.textContent = text;
-
-  div.appendChild(bubble);
-  chatBox.appendChild(div);
-  chatBox.scrollTop = chatBox.scrollHeight;
-}
-
-// 发送消息
 function send() {
-  const text = msgInput.value.trim();
-  if (!text) return;
+    let name = username.value || '访客';
+    let text = msgInput.value.trim();
+    if (!text) return;
 
-  addMsg(text, true);
-  saveMsg(text, true);
-  msgInput.value = '';
-
-  // 自动回复
-  setTimeout(() => {
-    const replies = ["谢谢你的留言～🎵", "很高兴认识你！", "你也喜欢音乐吗？", "欢迎常来我的小世界 😊"];
-    const reply = replies[Math.floor(Math.random() * replies.length)];
-    addMsg(reply);
-    saveMsg(reply, false);
-  }, 700);
+    let data = JSON.stringify({ name, msg: text });
+    socket.send(data);
+    msgInput.value = '';
 }
 
-// 绑定事件
 sendBtn.onclick = send;
-msgInput.addEventListener('keydown', (e) => {
-  if (e.key === 'Enter') {
-    e.preventDefault();
-    send();
-  }
+msgInput.addEventListener('keydown', e => {
+    if (e.key === 'Enter') send();
 });
-
-// 初始化
-loadHistory();
 </script>
 </body>
 </html>
