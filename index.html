@@ -28,6 +28,11 @@
             box-shadow: 0 8px 32px rgba(31, 38, 135, 0.15);
             backdrop-filter: blur(4px);
             margin-top: 100px;
+            opacity: 0;
+            animation: fadeIn 0.8s ease forwards;
+        }
+        @keyframes fadeIn {
+            to { opacity: 1; }
         }
         .avatar {
             width: 150px;
@@ -37,6 +42,7 @@
             margin-bottom: 20px;
             border: 4px solid #fff;
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
         }
         h1 {
             color: #2c3e50;
@@ -59,6 +65,7 @@
             padding: 20px;
             border-radius: 15px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
         }
         .music-cover {
             width: 150px;
@@ -69,6 +76,13 @@
         }
         audio {
             width: 250px;
+        }
+        nav a {
+            transition: color 0.3s ease;
+        }
+        .music-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
         }
 
         @media (max-width: 768px) {
@@ -111,49 +125,239 @@
 
         <div class="music-card">
             <img class="music-cover" src="https://picsum.photos/id/1005/150/150" alt="音乐封面">
-            <h3>我的音乐分享</h3>
+            <h3 style="color: #2c3e50; margin: 0 0 10px;">我的音乐分享</h3>
             <audio controls>
                 <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
                 你的浏览器不支持音频播放。
-            </audio>
+            
         </div>
     </div>
-    <script>
-        // 头像悬浮动效
-        const avatar = document.querySelector('.avatar');
-        avatar.addEventListener('mouseover', () => {
-          avatar.style.transform = 'scale(1.1) rotate(3deg)';
-          avatar.style.boxShadow = '0 0 20px rgba(100, 150, 220, 0.4)';
-        });
-        avatar.addEventListener('mouseout', () => {
-          avatar.style.transform = 'scale(1)';
-          avatar.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)';
-        });
-        
-        // 点击标题打招呼
-        document.querySelector('h1').onclick = function() {
-          alert('🎵 你好呀！我是王冠东，欢迎来到我的音乐小世界～');
-        };
-        
-        // 导航栏鼠标变色
-        const navLinks = document.querySelectorAll('nav a');
-        navLinks.forEach(link => {
-          link.onmouseover = () => link.style.color = '#5178d8';
-          link.onmouseout = () => link.style.color = '#2c3e50';
-        });
-        
-        // 播放音乐时头像跳动
-        const audio = document.querySelector('audio');
-        audio.addEventListener('play', () => {
-          const jump = setInterval(() => {
-            if (!audio.paused) {
-              avatar.style.transform = 'scale(1.05)';
-              setTimeout(() => avatar.style.transform = 'scale(1)', 200);
-            } else {
-              clearInterval(jump);
-            }
-          }, 350);
-        });
-        </script>
+
+<script>
+// ==========================
+// 基础交互：头像 + 音乐跳动 + 点击音符
+// ==========================
+const avatar = document.querySelector('.avatar');
+const audio = document.querySelector('audio');
+let beatInterval;
+
+avatar.style.transition = "all 0.3s ease";
+
+avatar.addEventListener('mouseover', () => {
+  avatar.style.transform = 'scale(1.1) rotate(3deg)';
+  avatar.style.boxShadow = '0 0 20px rgba(100,150,220,0.3)';
+});
+avatar.addEventListener('mouseout', () => {
+  avatar.style.transform = 'scale(1)';
+  avatar.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)';
+});
+
+document.querySelectorAll('nav a').forEach(link => {
+  link.style.transition = "color 0.3s";
+  link.onmouseover = () => link.style.color = "#5b7bd9";
+  link.onmouseout = () => link.style.color = "#2c3e50";
+});
+
+audio.addEventListener('play', () => {
+  beatInterval = setInterval(() => {
+    if (!audio.paused) {
+      avatar.style.transform = 'scale(1.05)';
+      setTimeout(() => avatar.style.transform = 'scale(1)', 180);
+    }
+  }, 350);
+});
+audio.addEventListener('pause', () => clearInterval(beatInterval));
+audio.addEventListener('ended', () => clearInterval(beatInterval));
+
+// 点击掉落动画
+const style = document.createElement('style');
+style.textContent = `
+@keyframes fall {
+  0%{transform:translateY(0);opacity:1}
+  100%{transform:translateY(70px);opacity:0}
+}
+.bubble{animation:fadeInUp 0.3s ease}
+@keyframes fadeInUp {
+  from{opacity:0;transform:translateY(10px)}
+  to{opacity:1;transform:translateY(0)}
+}
+`;
+document.head.appendChild(style);
+
+document.addEventListener('click', (e) => {
+  const emojis = ['🎵','🎶','✨','🎹','🎻','❤️','🎤','🌟'];
+  const el = document.createElement('div');
+  el.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+  el.style.cssText = `position:fixed;left:${e.pageX}px;top:${e.pageY}px;font-size:24px;z-index:999;pointer-events:none;animation:fall 1s forwards`;
+  document.body.appendChild(el);
+  setTimeout(()=>el.remove(),1000);
+});
+
+// ==========================
+// 顶配完整版聊天：昵称+本地存储+表情+语音+清空
+// ==========================
+const chatHTML = `
+<div style="margin-top:35px;max-width:420px;margin-left:auto;margin-right:auto">
+  <h3 style="color:#2c3e50;margin-bottom:12px;font-size:18px">💬 与王冠东聊天</h3>
+  
+  <div style="display:flex;gap:10px;margin-bottom:10px;">
+    <input type="text" id="nickName" placeholder="输入你的昵称" 
+      style="flex:1;padding:10px 12px;border-radius:12px;border:1px solid #ddd;outline:0;font-size:14px;">
+    <button id="clearBtn" 
+      style="padding:0 12px;background:#ff6b6b;color:#fff;border:0;border-radius:12px;font-size:13px;cursor:pointer;">
+      清空聊天
+    </button>
+  </div>
+
+  <div id="chatBox" style="height:280px;background:#fdfdff;border-radius:16px;padding:16px;overflow-y:auto;box-shadow:inset 0 2px 8px rgba(0,0,0,.05);border:1px solid #eee">
+    <div class="bubble" style="margin-bottom:10px">
+      <div style="background:#e6f7ff;padding:10px 14px;border-radius:14px 14px 14px 4px;display:inline-block;max-width:75%;font-size:14px;color:#2c3e50">
+        你好呀～我是王冠东，欢迎来聊天 🎵
+      </div>
+      <div style="font-size:11px;color:#999;margin-top:3px">刚刚</div>
+    </div>
+  </div>
+
+  <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap">
+    <button id="emojiBtn" style="padding:10px 12px;background:#fff;border:1px solid #ddd;border-radius:12px;cursor:pointer">😊</button>
+    <button id="voiceBtn" style="padding:10px 12px;background:#fff;border:1px solid #ddd;border-radius:12px;cursor:pointer">🎤</button>
+    <input type="text" id="msgInput" placeholder="说点什么..." style="flex:1;padding:12px;border-radius:12px;border:1px solid #ddd;outline:0">
+    <button id="sendBtn" style="padding:0 16px;background:#5b7bd9;color:#fff;border:0;border-radius:12px;font-weight:700;cursor:pointer">发送</button>
+  </div>
+
+  <div id="emojiPanel" style="display:none;gap:8px;margin-top:10px;padding:10px;background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.05)">
+    <span class="emo">😊</span>
+    <span class="emo">😂</span>
+    <span class="emo">😍</span>
+    <span class="emo">👍</span>
+    <span class="emo">🎵</span>
+    <span class="emo">🎶</span>
+    <span class="emo">❤️</span>
+    <span class="emo">🌟</span>
+  </div>
+</div>
+`;
+
+document.querySelector('.container').innerHTML += chatHTML;
+
+// 时间
+function getTime() {
+  const d = new Date();
+  let h = d.getHours();
+  let m = d.getMinutes();
+  return h + ":" + (m < 10 ? "0" + m : m);
+}
+
+// 自动回复
+function reply() {
+  const list = [
+    "谢谢你的留言～🎵",
+    "很高兴认识你呀！",
+    "你也喜欢音乐吗？",
+    "我是学美声和古筝的～",
+    "欢迎常来我的小世界 😊",
+    "有什么想听的可以告诉我",
+    "你平时喜欢唱歌还是听音乐？"
+  ];
+  return list[Math.floor(Math.random() * list.length)];
+}
+
+// 表情面板
+const emoBtn = document.getElementById('emojiBtn');
+const panel = document.getElementById('emojiPanel');
+emoBtn.onclick = () => panel.style.display = panel.style.display=='flex'?'none':'flex';
+
+document.querySelectorAll('.emo').forEach(e => {
+  e.onclick = () => {
+    document.getElementById('msgInput').value += e.textContent;
+    panel.style.display = 'none';
+  };
+  e.style.cssText = "font-size:20px;cursor:pointer";
+});
+
+// 语音输入
+const voiceBtn = document.getElementById('voiceBtn');
+const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+if (SpeechRecognition) {
+  const recog = new SpeechRecognition();
+  recog.lang = "zh-CN";
+  voiceBtn.onclick = () => {
+    recog.start();
+  };
+  recog.onresult = (e) => {
+    document.getElementById('msgInput').value = e.results[0][0].transcript;
+  };
+}
+
+// 本地存储
+function saveMsg(html) {
+  let arr = JSON.parse(localStorage.getItem('chat') || '[]');
+  arr.push(html);
+  localStorage.setItem('chat', JSON.stringify(arr));
+}
+function loadMsg() {
+  let arr = JSON.parse(localStorage.getItem('chat') || '[]');
+  const box = document.getElementById('chatBox');
+  arr.forEach(h => box.innerHTML += h);
+}
+loadMsg();
+
+// 清空聊天
+document.getElementById('clearBtn').onclick = function(){
+  if(confirm('确定要清空所有聊天记录吗？')){
+    localStorage.removeItem('chat');
+    document.getElementById('chatBox').innerHTML = `
+    <div class="bubble" style="margin-bottom:10px">
+      <div style="background:#e6f7ff;padding:10px 14px;border-radius:14px 14px 14px 4px;display:inline-block;max-width:75%;font-size:14px;color:#2c3e50">
+        你好呀～我是王冠东，欢迎来聊天 🎵
+      </div>
+      <div style="font-size:11px;color:#999;margin-top:3px">刚刚</div>
+    </div>`;
+  }
+}
+
+// 发送
+const send = () => {
+  const nick = document.getElementById('nickName').value.trim() || "访客";
+  const input = document.getElementById('msgInput');
+  const txt = input.value.trim();
+  if (!txt) return;
+
+  const box = document.getElementById('chatBox');
+  const t = getTime();
+
+  const userHtml = `
+  <div class="bubble" style="margin-bottom:10px;text-align:right">
+    <div style="background:#d1c4e9;padding:10px 14px;border-radius:14px 14px 4px 14px;display:inline-block;max-width:75%;font-size:14px">
+      <div style="font-size:12px;color:#777;margin-bottom:4px">${nick}</div>${txt}
+    </div>
+    <div style="font-size:11px;color:#999;margin-top:3px">${t}</div>
+  </div>`;
+
+  box.innerHTML += userHtml;
+  saveMsg(userHtml);
+  input.value = '';
+  box.scrollTop = box.scrollHeight;
+
+  setTimeout(() => {
+    const rpy = reply();
+    const botHtml = `
+    <div class="bubble" style="margin-bottom:10px">
+      <div style="background:#e6f7ff;padding:10px 14px;border-radius:14px 14px 14px 4px;display:inline-block;max-width:75%;font-size:14px">
+        <div style="font-size:12px;color:#777;margin-bottom:4px">王冠东</div>${rpy}
+      </div>
+      <div style="font-size:11px;color:#999;margin-top:3px">${t}</div>
+    </div>`;
+    box.innerHTML += botHtml;
+    saveMsg(botHtml);
+    box.scrollTop = box.scrollHeight;
+  }, 700);
+};
+
+document.getElementById('sendBtn').onclick = send;
+document.getElementById('msgInput').addEventListener('keypress', e => {
+  if (e.key === 'Enter') send();
+});
+</script>
 </body>
 </html>
