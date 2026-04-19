@@ -118,5 +118,42 @@
             </audio>
         </div>
     </div>
+    <script>
+        // 头像悬浮动效
+        const avatar = document.querySelector('.avatar');
+        avatar.addEventListener('mouseover', () => {
+          avatar.style.transform = 'scale(1.1) rotate(3deg)';
+          avatar.style.boxShadow = '0 0 20px rgba(100, 150, 220, 0.4)';
+        });
+        avatar.addEventListener('mouseout', () => {
+          avatar.style.transform = 'scale(1)';
+          avatar.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)';
+        });
+        
+        // 点击标题打招呼
+        document.querySelector('h1').onclick = function() {
+          alert('🎵 你好呀！我是王冠东，欢迎来到我的音乐小世界～');
+        };
+        
+        // 导航栏鼠标变色
+        const navLinks = document.querySelectorAll('nav a');
+        navLinks.forEach(link => {
+          link.onmouseover = () => link.style.color = '#5178d8';
+          link.onmouseout = () => link.style.color = '#2c3e50';
+        });
+        
+        // 播放音乐时头像跳动
+        const audio = document.querySelector('audio');
+        audio.addEventListener('play', () => {
+          const jump = setInterval(() => {
+            if (!audio.paused) {
+              avatar.style.transform = 'scale(1.05)';
+              setTimeout(() => avatar.style.transform = 'scale(1)', 200);
+            } else {
+              clearInterval(jump);
+            }
+          }, 350);
+        });
+        </script>
 </body>
 </html>
