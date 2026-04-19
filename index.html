@@ -132,10 +132,10 @@
         <audio controls>
             <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
             你的浏览器不支持音频播放。
-        </audio>
+        
     </div>
 
-    <!-- 在线实时聊天 -->
+    <!-- 纯前端聊天 -->
     <div style="margin-top:35px;max-width:420px;margin-left:auto;margin-right:auto">
         <h3 style="color:#2c3e50;margin-bottom:12px;font-size:18px">💬 在线聊天</h3>
         
@@ -154,49 +154,29 @@
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/minapp-sdk@2.14.0/dist/sdk-v2.min.js"></script>
 <script>
-const CLIENT_ID = '9b6f465864ad7e058539';
-const { BaaS } = MinApp;
-BaaS.init({
-  clientID: CLIENT_ID
-});
-
-const MessageTable = new BaaS.TableObject('chatmessage');
 const chatBox = document.getElementById('chatBox');
 const msgInput = document.getElementById('msgInput');
 const sendBtn = document.getElementById('sendBtn');
 
-// 发送函数
-async function send() {
-  const text = msgInput.value.trim();
-  if (!text) return;
-
-  try {
-    const record = MessageTable.create();
-    record.set('text', text);
-    record.set('from', 'visitor');
-    await record.save();
-    msgInput.value = '';
-  } catch (e) {
-    alert("发送失败：" + e.message);
-  }
+// 加载历史消息
+function loadHistory() {
+  const history = JSON.parse(localStorage.getItem('chatHistory') || '[]');
+  history.forEach(msg => addMsg(msg.text, msg.isMe));
 }
 
-// 绑定事件
-sendBtn.onclick = send;
-msgInput.addEventListener("keydown", function (e) {
-  if (e.key === "Enter") {
-    e.preventDefault();
-    send();
-  }
-});
+// 保存消息
+function saveMsg(text, isMe) {
+  const history = JSON.parse(localStorage.getItem('chatHistory') || '[]');
+  history.push({ text, isMe });
+  localStorage.setItem('chatHistory', JSON.stringify(history));
+}
 
-// 渲染消息
-function addMsg(msg) {
+// 添加消息到界面
+function addMsg(text, isMe = false) {
   const div = document.createElement('div');
   div.style.marginBottom = '10px';
-  div.style.textAlign = 'left';
+  div.style.textAlign = isMe ? 'right' : 'left';
 
   const bubble = document.createElement('div');
   bubble.style.padding = '10px 14px';
@@ -204,32 +184,43 @@ function addMsg(msg) {
   bubble.style.display = 'inline-block';
   bubble.style.maxWidth = '75%';
   bubble.style.fontSize = '14px';
-  bubble.style.background = '#e6f7ff';
-  bubble.textContent = msg.text;
+  bubble.style.background = isMe ? '#d1c4e9' : '#e6f7ff';
+  bubble.textContent = text;
 
   div.appendChild(bubble);
   chatBox.appendChild(div);
   chatBox.scrollTop = chatBox.scrollHeight;
 }
 
-// 加载历史
-async function loadHistory() {
-  const query = new BaaS.Query();
-  query.orderBy('created_at');
-  const { data } = await MessageTable.find(query);
-  data.forEach(item => addMsg(item));
+// 发送消息
+function send() {
+  const text = msgInput.value.trim();
+  if (!text) return;
+
+  addMsg(text, true);
+  saveMsg(text, true);
+  msgInput.value = '';
+
+  // 自动回复
+  setTimeout(() => {
+    const replies = ["谢谢你的留言～🎵", "很高兴认识你！", "你也喜欢音乐吗？", "欢迎常来我的小世界 😊"];
+    const reply = replies[Math.floor(Math.random() * replies.length)];
+    addMsg(reply);
+    saveMsg(reply, false);
+  }, 700);
 }
 
-// 实时监听
-function listen() {
-  const realtime = MessageTable.watch();
-  realtime.on('create', (msg) => {
-    addMsg(msg);
-  });
-}
+// 绑定事件
+sendBtn.onclick = send;
+msgInput.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    send();
+  }
+});
 
+// 初始化
 loadHistory();
-listen();
 </script>
 </body>
 </html>
