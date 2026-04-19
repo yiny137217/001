@@ -19,6 +19,35 @@
             display: flex;
             justify-content: center;
             align-items: flex-start;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* 背景动态效果 */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .bg-particle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(74, 108, 247, 0.1);
+            animation: float 20s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-50px) rotate(180deg);
+            }
         }
 
         /* 主容器 */
@@ -66,6 +95,13 @@
             align-items: center;
             text-align: center;
             gap: 22px;
+            transition: all 0.3s ease;
+            transform: translateY(0);
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 40px rgba(74, 108, 247, 0.15);
         }
 
         .avatar {
@@ -103,11 +139,156 @@
             border-radius: 14px;
             margin-bottom: 16px;
             object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .music-cover:hover {
+            transform: scale(1.05);
+        }
+
+        .music-info {
+            margin-bottom: 16px;
+        }
+
+        .music-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #374151;
+            margin-bottom: 4px;
+        }
+
+        .music-artist {
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        .player-controls {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .control-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #4a6cf7;
+            color: white;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .control-btn:hover {
+            background: #3a5cec;
+            transform: scale(1.05);
+        }
+
+        .progress-container {
+            width: 100%;
+            height: 6px;
+            background: #e5e7eb;
+            border-radius: 3px;
+            margin: 12px 0;
+            cursor: pointer;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: #4a6cf7;
+            border-radius: 3px;
+            width: 0%;
+            transition: width 0.1s linear;
+        }
+
+        .time-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: #6b7280;
+            margin-bottom: 16px;
+        }
+
+        .volume-control {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .volume-slider {
+            width: 80px;
+            height: 4px;
+            background: #e5e7eb;
+            border-radius: 2px;
+            cursor: pointer;
+        }
+
+        .volume-bar {
+            height: 100%;
+            background: #4a6cf7;
+            border-radius: 2px;
+            width: 70%;
+        }
+
+        .playlist {
+            margin-top: 20px;
+            border-top: 1px solid #e5e7eb;
+            padding-top: 16px;
+        }
+
+        .playlist-title {
+            font-size: 14px;
+            font-weight: bold;
+            color: #374151;
+            margin-bottom: 12px;
+        }
+
+        .playlist-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.2s ease;
+            margin-bottom: 8px;
+        }
+
+        .playlist-item:hover {
+            background: #f3f4f6;
+        }
+
+        .playlist-item.active {
+            background: #e0e7ff;
+        }
+
+        .playlist-item-cover {
+            width: 40px;
+            height: 40px;
+            border-radius: 6px;
+            object-fit: cover;
+        }
+
+        .playlist-item-info {
+            flex: 1;
+        }
+
+        .playlist-item-title {
+            font-size: 14px;
+            color: #374151;
+        }
+
+        .playlist-item-artist {
+            font-size: 12px;
+            color: #6b7280;
         }
 
         audio {
-            width: 100%;
-            height: 42px;
+            display: none;
         }
 
         /* 右侧：聊天区域 */
@@ -119,6 +300,13 @@
             display: flex;
             flex-direction: column;
             gap: 24px;
+            transition: all 0.3s ease;
+            transform: translateY(0);
+        }
+
+        .chat-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 40px rgba(74, 108, 247, 0.15);
         }
 
         .chat-title {
@@ -144,6 +332,59 @@
             display: flex;
             gap: 12px;
             align-items: center;
+        }
+
+        /* 表情选择器 */
+        .emoji-picker {
+            position: relative;
+        }
+
+        .emoji-btn {
+            padding: 10px;
+            background: #f3f4f6;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: all 0.2s ease;
+        }
+
+        .emoji-btn:hover {
+            background: #e5e7eb;
+        }
+
+        .emoji-panel {
+            position: absolute;
+            bottom: 100%;
+            left: 0;
+            background: white;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            padding: 12px;
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 8px;
+            margin-bottom: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            z-index: 1000;
+            display: none;
+        }
+
+        .emoji-panel.active {
+            display: grid;
+        }
+
+        .emoji-item {
+            font-size: 20px;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 4px;
+            text-align: center;
+            transition: background 0.2s ease;
+        }
+
+        .emoji-item:hover {
+            background: #f3f4f6;
         }
 
         #username {
@@ -216,16 +457,309 @@
             background: #e0f2fe;
         }
 
+        /* 音乐作品展示区 */
+        .works-section {
+            background: white;
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.06);
+            transition: all 0.3s ease;
+        }
+
+        .works-section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(74, 108, 247, 0.15);
+        }
+
+        .works-title {
+            font-size: 26px;
+            color: #1f2937;
+            font-weight: bold;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        .works-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .work-item {
+            background: #f9fafb;
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .work-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(74, 108, 247, 0.1);
+        }
+
+        .work-cover {
+            width: 100%;
+            height: 180px;
+            border-radius: 12px;
+            object-fit: cover;
+            margin-bottom: 12px;
+        }
+
+        .work-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #374151;
+            margin-bottom: 4px;
+        }
+
+        .work-desc {
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        /* 社交媒体链接 */
+        .social-section {
+            background: white;
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.06);
+            margin-top: 30px;
+            transition: all 0.3s ease;
+        }
+
+        .social-section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(74, 108, 247, 0.15);
+        }
+
+        .social-title {
+            font-size: 26px;
+            color: #1f2937;
+            font-weight: bold;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .social-link {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            color: #374151;
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            transform: translateY(-5px);
+            color: #4a6cf7;
+        }
+
+        .social-icon {
+            font-size: 32px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: #f3f4f6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover .social-icon {
+            background: #e0e7ff;
+        }
+
+        .social-name {
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        /* 访客留言功能 */
+        .guestbook-section {
+            background: white;
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.06);
+            margin-top: 30px;
+            transition: all 0.3s ease;
+        }
+
+        .guestbook-section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(74, 108, 247, 0.15);
+        }
+
+        .guestbook-title {
+            font-size: 26px;
+            color: #1f2937;
+            font-weight: bold;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        .guestbook-form {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-label {
+            font-size: 14px;
+            font-weight: bold;
+            color: #374151;
+        }
+
+        .form-input {
+            padding: 12px 16px;
+            border-radius: 12px;
+            border: 1px solid #d1d5db;
+            font-size: 15px;
+            outline: none;
+            transition: 0.2s;
+        }
+
+        .form-input:focus {
+            border-color: #4a6cf7;
+        }
+
+        .form-textarea {
+            padding: 12px 16px;
+            border-radius: 12px;
+            border: 1px solid #d1d5db;
+            font-size: 15px;
+            outline: none;
+            transition: 0.2s;
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .form-textarea:focus {
+            border-color: #4a6cf7;
+        }
+
+        .form-submit {
+            padding: 14px 28px;
+            background: #4a6cf7;
+            color: white;
+            border: none;
+            border-radius: 14px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+            align-self: center;
+        }
+
+        .form-submit:hover {
+            background: #3a5cec;
+        }
+
+        .guestbook-messages {
+            margin-top: 30px;
+            border-top: 1px solid #e5e7eb;
+            padding-top: 24px;
+        }
+
+        .guestbook-message {
+            background: #f9fafb;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+
+        .guestbook-message-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .guestbook-message-name {
+            font-size: 14px;
+            font-weight: bold;
+            color: #374151;
+        }
+
+        .guestbook-message-time {
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        .guestbook-message-content {
+            font-size: 14px;
+            color: #374151;
+            line-height: 1.5;
+        }
+
         /* 响应式 */
         @media (max-width: 900px) {
             .main {
                 grid-template-columns: 1fr;
+            }
+            
+            .works-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .social-links {
+                gap: 20px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .card,
+            .chat-card,
+            .works-section,
+            .social-section,
+            .guestbook-section {
+                padding: 20px;
+            }
+            
+            .title {
+                font-size: 28px;
+            }
+            
+            .chat-title,
+            .works-title,
+            .social-title,
+            .guestbook-title {
+                font-size: 20px;
+            }
+            
+            .chat-input-group {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            #username {
+                width: 100%;
             }
         }
     </style>
 </head>
 
 <body>
+
+<!-- 背景动画 -->
+<div class="bg-animation" id="bgAnimation"></div>
 
 <div class="wrapper">
     <!-- 顶部导航 -->
@@ -243,12 +777,57 @@
             <p class="desc">欢迎来到我的音乐小天地 ~</p>
 
             <div class="music-box">
-                <img class="music-cover" src="https://picsum.photos/id/1005/150/150" alt="音乐封面">
-                <h3 style="margin-bottom:14px; color:#374151;">我的音乐分享</h3>
-                <audio controls>
+                <img class="music-cover" id="currentCover" src="https://picsum.photos/id/1005/150/150" alt="音乐封面">
+                <div class="music-info">
+                    <div class="music-title" id="currentTitle">优美的旋律</div>
+                    <div class="music-artist" id="currentArtist">SoundHelix</div>
+                </div>
+                <div class="player-controls">
+                    <button class="control-btn" id="prevBtn">⏮</button>
+                    <button class="control-btn" id="playBtn">▶</button>
+                    <button class="control-btn" id="nextBtn">⏭</button>
+                </div>
+                <div class="time-info">
+                    <span id="currentTime">0:00</span>
+                    <span id="duration">0:00</span>
+                </div>
+                <div class="progress-container" id="progressContainer">
+                    <div class="progress-bar" id="progressBar"></div>
+                </div>
+                <div class="volume-control">
+                    <span>🔊</span>
+                    <div class="volume-slider" id="volumeSlider">
+                        <div class="volume-bar" id="volumeBar"></div>
+                    </div>
+                </div>
+                <audio id="audioPlayer">
                     <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
                     你的浏览器不支持音频播放。
                 </audio>
+                <div class="playlist">
+                    <div class="playlist-title">播放列表</div>
+                    <div class="playlist-item active" data-index="0">
+                        <img class="playlist-item-cover" src="https://picsum.photos/id/1005/150/150" alt="封面">
+                        <div class="playlist-item-info">
+                            <div class="playlist-item-title">优美的旋律</div>
+                            <div class="playlist-item-artist">SoundHelix</div>
+                        </div>
+                    </div>
+                    <div class="playlist-item" data-index="1">
+                        <img class="playlist-item-cover" src="https://picsum.photos/id/1012/150/150" alt="封面">
+                        <div class="playlist-item-info">
+                            <div class="playlist-item-title">轻松小调</div>
+                            <div class="playlist-item-artist">MusicDB</div>
+                        </div>
+                    </div>
+                    <div class="playlist-item" data-index="2">
+                        <img class="playlist-item-cover" src="https://picsum.photos/id/1025/150/150" alt="封面">
+                        <div class="playlist-item-info">
+                            <div class="playlist-item-title">古典精选</div>
+                            <div class="playlist-item-artist">ClassicFM</div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -260,17 +839,276 @@
             <div class="chat-input-group">
                 <input type="text" id="username" placeholder="输入昵称">
                 <input type="text" id="msgInput" placeholder="输入消息...">
+                <div class="emoji-picker">
+                    <button class="emoji-btn" id="emojiBtn">😊</button>
+                    <div class="emoji-panel" id="emojiPanel">
+                        <div class="emoji-item">😊</div>
+                        <div class="emoji-item">😂</div>
+                        <div class="emoji-item">😍</div>
+                        <div class="emoji-item">🤔</div>
+                        <div class="emoji-item">👍</div>
+                        <div class="emoji-item">❤️</div>
+                        <div class="emoji-item">🎵</div>
+                        <div class="emoji-item">🎸</div>
+                        <div class="emoji-item">🎹</div>
+                        <div class="emoji-item">🎶</div>
+                        <div class="emoji-item">👏</div>
+                        <div class="emoji-item">🎉</div>
+                        <div class="emoji-item">🔥</div>
+                        <div class="emoji-item">✨</div>
+                        <div class="emoji-item">🌟</div>
+                    </div>
+                </div>
                 <button id="sendBtn">发送</button>
             </div>
+        </div>
+    </div>
+
+    <!-- 音乐作品展示区 -->
+    <div class="works-section">
+        <h2 class="works-title">🎵 音乐作品</h2>
+        <div class="works-grid">
+            <div class="work-item">
+                <img class="work-cover" src="https://picsum.photos/id/1014/300/200" alt="作品封面">
+                <h3 class="work-title">美声演唱 - 我的太阳</h3>
+                <p class="work-desc">古典美声作品，展现声音的魅力</p>
+            </div>
+            <div class="work-item">
+                <img class="work-cover" src="https://picsum.photos/id/1015/300/200" alt="作品封面">
+                <h3 class="work-title">古筝独奏 - 高山流水</h3>
+                <p class="work-desc">传统古筝曲目，演绎古典韵味</p>
+            </div>
+            <div class="work-item">
+                <img class="work-cover" src="https://picsum.photos/id/1016/300/200" alt="作品封面">
+                <h3 class="work-title">钢琴伴奏 - 梦中的婚礼</h3>
+                <p class="work-desc">浪漫钢琴曲，表达细腻情感</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 社交媒体链接 -->
+    <div class="social-section">
+        <h2 class="social-title">📱 关注我</h2>
+        <div class="social-links">
+            <a href="#" class="social-link">
+                <div class="social-icon">🎵</div>
+                <span class="social-name">音乐平台</span>
+            </a>
+            <a href="#" class="social-link">
+                <div class="social-icon">📘</div>
+                <span class="social-name">微信</span>
+            </a>
+            <a href="#" class="social-link">
+                <div class="social-icon">📷</div>
+                <span class="social-name">抖音</span>
+            </a>
+            <a href="#" class="social-link">
+                <div class="social-icon">🎬</div>
+                <span class="social-name">B站</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- 访客留言 -->
+    <div class="guestbook-section">
+        <h2 class="guestbook-title">✍️ 访客留言</h2>
+        <form class="guestbook-form" id="guestbookForm">
+            <div class="form-group">
+                <label class="form-label" for="guestName">姓名</label>
+                <input type="text" class="form-input" id="guestName" placeholder="请输入您的姓名">
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="guestMessage">留言内容</label>
+                <textarea class="form-textarea" id="guestMessage" placeholder="请输入您的留言"></textarea>
+            </div>
+            <button type="submit" class="form-submit">提交留言</button>
+        </form>
+        <div class="guestbook-messages" id="guestbookMessages">
+            <!-- 留言将在这里显示 -->
         </div>
     </div>
 </div>
 
 <script>
+    // 音乐播放器功能
+    const audioPlayer = document.getElementById('audioPlayer');
+    const playBtn = document.getElementById('playBtn');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const progressContainer = document.getElementById('progressContainer');
+    const progressBar = document.getElementById('progressBar');
+    const currentTimeEl = document.getElementById('currentTime');
+    const durationEl = document.getElementById('duration');
+    const volumeSlider = document.getElementById('volumeSlider');
+    const volumeBar = document.getElementById('volumeBar');
+    const currentCover = document.getElementById('currentCover');
+    const currentTitle = document.getElementById('currentTitle');
+    const currentArtist = document.getElementById('currentArtist');
+    const playlistItems = document.querySelectorAll('.playlist-item');
+
+    // 播放列表数据
+    const playlist = [
+        {
+            title: '优美的旋律',
+            artist: 'SoundHelix',
+            src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
+            cover: 'https://picsum.photos/id/1005/150/150'
+        },
+        {
+            title: '轻松小调',
+            artist: 'MusicDB',
+            src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3',
+            cover: 'https://picsum.photos/id/1012/150/150'
+        },
+        {
+            title: '古典精选',
+            artist: 'ClassicFM',
+            src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3',
+            cover: 'https://picsum.photos/id/1025/150/150'
+        }
+    ];
+
+    let currentIndex = 0;
+
+    // 初始化播放器
+    function initPlayer() {
+        loadSong(0);
+        updateProgress();
+    }
+
+    // 加载歌曲
+    function loadSong(index) {
+        const song = playlist[index];
+        currentIndex = index;
+        
+        audioPlayer.src = song.src;
+        currentCover.src = song.cover;
+        currentTitle.textContent = song.title;
+        currentArtist.textContent = song.artist;
+        
+        // 更新播放列表选中状态
+        playlistItems.forEach((item, i) => {
+            if (i === index) {
+                item.classList.add('active');
+            } else {
+                item.classList.remove('active');
+            }
+        });
+    }
+
+    // 播放/暂停
+    function togglePlay() {
+        if (audioPlayer.paused) {
+            audioPlayer.play();
+            playBtn.textContent = '⏸';
+        } else {
+            audioPlayer.pause();
+            playBtn.textContent = '▶';
+        }
+    }
+
+    // 上一曲
+    function prevSong() {
+        currentIndex = (currentIndex - 1 + playlist.length) % playlist.length;
+        loadSong(currentIndex);
+        audioPlayer.play();
+        playBtn.textContent = '⏸';
+    }
+
+    // 下一曲
+    function nextSong() {
+        currentIndex = (currentIndex + 1) % playlist.length;
+        loadSong(currentIndex);
+        audioPlayer.play();
+        playBtn.textContent = '⏸';
+    }
+
+    // 更新进度条
+    function updateProgress() {
+        const { duration, currentTime } = audioPlayer;
+        const progressPercent = (currentTime / duration) * 100;
+        progressBar.style.width = `${progressPercent}%`;
+        
+        // 更新时间显示
+        currentTimeEl.textContent = formatTime(currentTime);
+        durationEl.textContent = formatTime(duration);
+    }
+
+    // 格式化时间
+    function formatTime(time) {
+        const minutes = Math.floor(time / 60);
+        const seconds = Math.floor(time % 60);
+        return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+    }
+
+    // 设置进度
+    function setProgress(e) {
+        const width = this.clientWidth;
+        const clickX = e.offsetX;
+        const duration = audioPlayer.duration;
+        audioPlayer.currentTime = (clickX / width) * duration;
+    }
+
+    // 设置音量
+    function setVolume(e) {
+        const width = this.clientWidth;
+        const clickX = e.offsetX;
+        const volume = clickX / width;
+        audioPlayer.volume = volume;
+        volumeBar.style.width = `${volume * 100}%`;
+    }
+
+    // 事件监听
+    playBtn.addEventListener('click', togglePlay);
+    prevBtn.addEventListener('click', prevSong);
+    nextBtn.addEventListener('click', nextSong);
+    audioPlayer.addEventListener('timeupdate', updateProgress);
+    audioPlayer.addEventListener('ended', nextSong);
+    progressContainer.addEventListener('click', setProgress);
+    volumeSlider.addEventListener('click', setVolume);
+
+    // 播放列表点击
+    playlistItems.forEach((item, index) => {
+        item.addEventListener('click', () => {
+            loadSong(index);
+            audioPlayer.play();
+            playBtn.textContent = '⏸';
+        });
+    });
+
+    // 聊天功能
     const chatBox = document.getElementById('chatBox');
     const msgInput = document.getElementById('msgInput');
     const sendBtn = document.getElementById('sendBtn');
-    const username = document.getElementById('username');
+    const usernameInput = document.getElementById('username');
+    const emojiBtn = document.getElementById('emojiBtn');
+    const emojiPanel = document.getElementById('emojiPanel');
+    const emojiItems = document.querySelectorAll('.emoji-item');
+
+    // 消息存储
+    const MESSAGES_KEY = 'music_chat_messages';
+
+    // 加载消息
+    function loadMessages() {
+        const messages = localStorage.getItem(MESSAGES_KEY);
+        if (messages) {
+            const parsedMessages = JSON.parse(messages);
+            parsedMessages.forEach(msg => {
+                addMsg(msg.name, msg.text, msg.isSelf);
+            });
+        }
+    }
+
+    // 保存消息
+    function saveMessage(name, text, isSelf) {
+        const messages = JSON.parse(localStorage.getItem(MESSAGES_KEY) || '[]');
+        messages.push({ name, text, isSelf, timestamp: new Date().toISOString() });
+        // 限制消息数量，只保存最近50条
+        if (messages.length > 50) {
+            messages.splice(0, messages.length - 50);
+        }
+        localStorage.setItem(MESSAGES_KEY, JSON.stringify(messages));
+    }
 
     // 添加消息
     function addMsg(name, text, isSelf = false) {
@@ -286,23 +1124,179 @@
         chatBox.scrollTop = chatBox.scrollHeight;
     }
 
-    // 发送
-    function send() {
-        const name = username.value || '访客';
+    // 发送消息
+    function sendMessage() {
+        const name = usernameInput.value || '访客';
         const text = msgInput.value.trim();
         if (!text) return;
 
         addMsg(name, text, true);
+        saveMessage(name, text, true);
         msgInput.value = '';
+
+        // 模拟系统回复
+        setTimeout(() => {
+            const replies = [
+                '感谢你的分享！',
+                '这个想法很棒！',
+                '我也喜欢音乐！',
+                '很高兴认识你！',
+                '音乐是人类的共同语言！',
+                '你对音乐的理解很深刻！',
+                '期待听到更多你的想法！',
+                '音乐确实能带给我们很多快乐！',
+                '你喜欢什么类型的音乐呢？',
+                '音乐是心灵的语言！'
+            ];
+            const randomReply = replies[Math.floor(Math.random() * replies.length)];
+            addMsg('系统', randomReply);
+            saveMessage('系统', randomReply, false);
+        }, 1000);
     }
 
-    sendBtn.onclick = send;
+    // 表情选择
+    emojiBtn.addEventListener('click', () => {
+        emojiPanel.classList.toggle('active');
+    });
+
+    // 点击表情
+    emojiItems.forEach(item => {
+        item.addEventListener('click', () => {
+            msgInput.value += item.textContent;
+            msgInput.focus();
+        });
+    });
+
+    // 点击外部关闭表情面板
+    document.addEventListener('click', (e) => {
+        if (!emojiBtn.contains(e.target) && !emojiPanel.contains(e.target)) {
+            emojiPanel.classList.remove('active');
+        }
+    });
+
+    // 事件监听
+    sendBtn.addEventListener('click', sendMessage);
     msgInput.addEventListener('keydown', e => {
         if (e.key === 'Enter') {
             e.preventDefault();
-            send();
+            sendMessage();
         }
     });
+
+    // 背景动画
+    function initBackgroundAnimation() {
+        const bgAnimation = document.getElementById('bgAnimation');
+        const particleCount = 20;
+
+        for (let i = 0; i < particleCount; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'bg-particle';
+            
+            // 随机大小
+            const size = Math.random() * 100 + 50;
+            particle.style.width = `${size}px`;
+            particle.style.height = `${size}px`;
+            
+            // 随机位置
+            particle.style.left = `${Math.random() * 100}%`;
+            particle.style.top = `${Math.random() * 100}%`;
+            
+            // 随机动画延迟和持续时间
+            particle.style.animationDelay = `${Math.random() * 20}s`;
+            particle.style.animationDuration = `${Math.random() * 20 + 20}s`;
+            
+            // 随机不透明度
+            particle.style.opacity = Math.random() * 0.5 + 0.1;
+            
+            bgAnimation.appendChild(particle);
+        }
+    }
+
+    // 访客留言功能
+    const guestbookForm = document.getElementById('guestbookForm');
+    const guestbookMessages = document.getElementById('guestbookMessages');
+    const GUESTBOOK_KEY = 'music_guestbook_messages';
+
+    // 加载访客留言
+    function loadGuestbookMessages() {
+        const messages = localStorage.getItem(GUESTBOOK_KEY);
+        if (messages) {
+            const parsedMessages = JSON.parse(messages);
+            parsedMessages.forEach(msg => {
+                addGuestbookMessage(msg.name, msg.content, msg.timestamp);
+            });
+        }
+    }
+
+    // 保存访客留言
+    function saveGuestbookMessage(name, content) {
+        const messages = JSON.parse(localStorage.getItem(GUESTBOOK_KEY) || '[]');
+        const timestamp = new Date().toISOString();
+        messages.push({ name, content, timestamp });
+        // 限制留言数量，只保存最近50条
+        if (messages.length > 50) {
+            messages.splice(0, messages.length - 50);
+        }
+        localStorage.setItem(GUESTBOOK_KEY, JSON.stringify(messages));
+        return timestamp;
+    }
+
+    // 添加访客留言
+    function addGuestbookMessage(name, content, timestamp) {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = 'guestbook-message';
+        
+        const date = new Date(timestamp);
+        const formattedDate = date.toLocaleString('zh-CN');
+        
+        messageDiv.innerHTML = `
+            <div class="guestbook-message-header">
+                <span class="guestbook-message-name">${name}</span>
+                <span class="guestbook-message-time">${formattedDate}</span>
+            </div>
+            <div class="guestbook-message-content">${content}</div>
+        `;
+        
+        guestbookMessages.appendChild(messageDiv);
+    }
+
+    // 处理留言表单提交
+    guestbookForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const name = document.getElementById('guestName').value.trim();
+        const message = document.getElementById('guestMessage').value.trim();
+        
+        if (name && message) {
+            const timestamp = saveGuestbookMessage(name, message);
+            addGuestbookMessage(name, message, timestamp);
+            
+            // 清空表单
+            document.getElementById('guestName').value = '';
+            document.getElementById('guestMessage').value = '';
+            
+            // 显示成功提示
+            alert('留言提交成功！');
+        } else {
+            alert('请填写姓名和留言内容');
+        }
+    });
+
+    // 初始化
+    window.onload = function() {
+        initPlayer();
+        initBackgroundAnimation();
+        // 加载历史消息
+        loadMessages();
+        // 如果没有历史消息，添加欢迎消息
+        if (localStorage.getItem(MESSAGES_KEY) === null) {
+            const welcomeMsg = '欢迎来到王冠东的音乐小世界！分享你的音乐心得吧！';
+            addMsg('系统', welcomeMsg);
+            saveMessage('系统', welcomeMsg, false);
+        }
+        // 加载访客留言
+        loadGuestbookMessages();
+    };
 </script>
 
 </body>
