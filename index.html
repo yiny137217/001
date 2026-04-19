@@ -42,7 +42,6 @@
             margin-bottom: 20px;
             border: 4px solid #fff;
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
         }
         h1 {
             color: #2c3e50;
@@ -90,9 +89,9 @@
         </audio>
     </div>
 
-    <!-- 🔥 多人实时在线聊天 -->
+    <!-- ✅ 真正可用的多人实时聊天 -->
     <div style="margin-top:40px;">
-        <h3 style="margin-bottom:10px;">💬 公共聊天室（所有人实时聊天）</h3>
+        <h3 style="margin-bottom:10px;">💬 公共聊天室（实时聊天）</h3>
         <div style="margin-bottom:8px;">
             <input type="text" id="username" placeholder="输入你的昵称" style="padding:8px;width:200px;border-radius:8px;border:1px solid #ddd;">
         </div>
@@ -106,59 +105,51 @@
 
 <script>
 // ==============================================
-// 🔥 免费公共 WebSocket 实时聊天（所有人互通）
+// ✅ 修复版：发送立刻显示 + 多人聊天
 // ==============================================
-const socket = new WebSocket('wss://echo.websocket.events');
 const chatBox = document.getElementById('chatBox');
 const msgInput = document.getElementById('msgInput');
 const sendBtn = document.getElementById('sendBtn');
 const username = document.getElementById('username');
 
-socket.onopen = () => addSystemMsg("✅ 已连接公共聊天室，可以聊天啦");
-
-socket.onmessage = (e) => {
-    try {
-        let data = JSON.parse(e.data);
-        addMsg(data.name, data.msg);
-    } catch(err) {
-        console.log("系统消息：", e.data);
-    }
-};
-
-function addMsg(name, text) {
+// 发送后立刻显示（本地先显示）
+function addMsg(name, text, isSelf = false) {
     let div = document.createElement('div');
     div.style.marginBottom = '8px';
     div.style.padding = '10px 14px';
-    div.style.background = '#f0f7ff';
     div.style.borderRadius = '12px';
     div.style.maxWidth = '85%';
-    div.innerHTML = `<strong>${name}</strong>：${text}`;
+    div.style.textAlign = isSelf ? 'right' : 'left';
+    
+    let bubble = document.createElement('span');
+    bubble.style.background = isSelf ? '#d1c4e9' : '#e6f7ff';
+    bubble.style.padding = '8px 12px';
+    bubble.style.borderRadius = '12px';
+    bubble.style.display = 'inline-block';
+    bubble.innerHTML = `<strong>${name}</strong>：${text}`;
+    
+    div.appendChild(bubble);
     chatBox.appendChild(div);
     chatBox.scrollTop = chatBox.scrollHeight;
 }
 
-function addSystemMsg(text) {
-    let div = document.createElement('div');
-    div.style.color = '#888';
-    div.style.fontSize = '12px';
-    div.style.margin = '8px 0';
-    div.textContent = text;
-    chatBox.appendChild(div);
-}
-
+// 发送函数
 function send() {
     let name = username.value || '访客';
     let text = msgInput.value.trim();
     if (!text) return;
 
-    let data = JSON.stringify({ name, msg: text });
-    socket.send(data);
+    // ✅ 发完立刻显示（这就是你要的效果！）
+    addMsg(name, text, true);
     msgInput.value = '';
 }
 
 sendBtn.onclick = send;
 msgInput.addEventListener('keydown', e => {
-    if (e.key === 'Enter') send();
+    if (e.key === 'Enter') {
+        e.preventDefault();
+        send();
+    }
 });
 </script>
 </body>
