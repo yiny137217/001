@@ -12,42 +12,60 @@
         }
 
         body {
-            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            background: linear-gradient(135deg, #f0f4ff 0%, #e2eaff 100%);
             font-family: "微软雅黑", sans-serif;
             min-height: 100vh;
-            padding: 30px 20px;
+            padding: 40px 20px;
             display: flex;
             justify-content: center;
             align-items: flex-start;
         }
 
-        /* 整体大容器 —— 宽敞大气 */
-        .page {
+        /* 主容器 */
+        .wrapper {
             width: 100%;
-            max-width: 1000px;
+            max-width: 1100px;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        /* 顶部导航 */
+        .navbar {
+            background: rgba(255,255,255,0.9);
+            backdrop-filter: blur(10px);
+            padding: 18px 30px;
+            border-radius: 16px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: bold;
+            color: #4a6cf7;
+        }
+
+        /* 内容主体：左右布局 */
+        .main {
             display: grid;
-            grid-template-columns: 1fr 1.2fr;
-            gap: 40px;
-            background: #ffffff;
+            grid-template-columns: 1fr 1.3fr;
+            gap: 30px;
+        }
+
+        /* 左侧卡片 */
+        .card {
+            background: white;
             border-radius: 24px;
-            padding: 50px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
-            animation: fadeIn 0.8s ease forwards;
-            opacity: 0;
-        }
-
-        @keyframes fadeIn {
-            to { opacity: 1; }
-        }
-
-        /* 左侧：个人信息 */
-        .left {
+            padding: 40px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.06);
             display: flex;
             flex-direction: column;
             align-items: center;
             text-align: center;
-            gap: 24px;
-            padding: 20px 0;
+            gap: 22px;
         }
 
         .avatar {
@@ -56,145 +74,152 @@
             border-radius: 50%;
             object-fit: cover;
             border: 6px solid #fff;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+            box-shadow: 0 6px 20px rgba(74, 108, 247, 0.15);
         }
 
-        .left h1 {
-            font-size: 40px;
-            color: #1e293b;
-            margin-top: 10px;
+        .title {
+            font-size: 36px;
+            color: #1f2937;
         }
 
-        .left p {
-            font-size: 20px;
-            color: #475569;
+        .desc {
+            font-size: 18px;
+            color: #6b7280;
             line-height: 1.7;
         }
 
-        /* 音乐卡片 */
-        .music-card {
-            background: #f8fafc;
-            padding: 28px;
-            border-radius: 20px;
+        /* 音乐模块 */
+        .music-box {
             width: 100%;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            background: #f9fafb;
+            border-radius: 18px;
+            padding: 26px;
             margin-top: 10px;
         }
 
         .music-cover {
-            width: 160px;
-            height: 160px;
+            width: 150px;
+            height: 150px;
             border-radius: 14px;
-            margin-bottom: 18px;
+            margin-bottom: 16px;
             object-fit: cover;
-        }
-
-        .music-card h3 {
-            font-size: 20px;
-            color: #1e293b;
-            margin-bottom: 14px;
         }
 
         audio {
             width: 100%;
-            height: 44px;
+            height: 42px;
         }
 
-        /* 右侧：聊天室 */
-        .right {
+        /* 右侧：聊天区域 */
+        .chat-card {
+            background: white;
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.06);
             display: flex;
             flex-direction: column;
             gap: 24px;
         }
 
-        .right h2 {
+        .chat-title {
             font-size: 26px;
-            color: #1e293b;
-            text-align: left;
+            color: #1f2937;
+            font-weight: bold;
         }
 
-        /* 聊天框 —— 宽敞大气 */
+        /* 聊天框 */
         #chatBox {
             flex: 1;
-            min-height: 420px;
-            background: #f8fafc;
-            border-radius: 20px;
+            min-height: 450px;
+            background: #f9fafb;
+            border-radius: 18px;
             padding: 28px;
             overflow-y: auto;
             text-align: left;
-            border: 1px solid #e2e8f0;
+            border: 1px solid #e5e7eb;
         }
 
         /* 输入区域 */
-        .chat-input {
+        .chat-input-group {
             display: flex;
-            gap: 14px;
+            gap: 12px;
             align-items: center;
         }
 
         #username {
             padding: 14px 16px;
             border-radius: 14px;
-            border: 1px solid #e2e8f0;
-            font-size: 16px;
-            width: 180px;
+            border: 1px solid #d1d5db;
+            font-size: 15px;
+            width: 170px;
+            outline: none;
+            transition: 0.2s;
+        }
+
+        #username:focus {
+            border-color: #4a6cf7;
         }
 
         #msgInput {
             flex: 1;
             padding: 14px 18px;
             border-radius: 14px;
-            border: 1px solid #e2e8f0;
-            font-size: 16px;
+            border: 1px solid #d1d5db;
+            font-size: 15px;
+            outline: none;
+            transition: 0.2s;
+        }
+
+        #msgInput:focus {
+            border-color: #4a6cf7;
         }
 
         #sendBtn {
-            padding: 14px 26px;
-            background: #5b7bd9;
+            padding: 14px 28px;
+            background: #4a6cf7;
             color: white;
             border: none;
             border-radius: 14px;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: bold;
             cursor: pointer;
             transition: 0.2s;
         }
 
         #sendBtn:hover {
-            background: #4a69c0;
+            background: #3a5cec;
         }
 
         /* 消息气泡 */
-        .msg-item {
+        .msg {
             margin-bottom: 16px;
-            max-width: 80%;
+            max-width: 78%;
         }
 
-        .msg-self {
+        .me {
             margin-left: auto;
         }
 
-        .msg-bubble {
+        .bubble {
             padding: 12px 16px;
             border-radius: 16px;
-            font-size: 16px;
+            font-size: 15px;
             line-height: 1.5;
             display: inline-block;
         }
 
-        .msg-self .msg-bubble {
+        .me .bubble {
             background: #d1c4e9;
         }
 
-        .msg-other .msg-bubble {
-            background: #e6f7ff;
+        .other .bubble {
+            background: #e0f2fe;
         }
 
         /* 响应式 */
-        @media (max-width: 860px) {
-            .page {
+        @media (max-width: 900px) {
+            .main {
                 grid-template-columns: 1fr;
-                padding: 30px 20px;
             }
         }
     </style>
@@ -202,34 +227,41 @@
 
 <body>
 
-<div class="page">
-    <!-- 左侧：个人信息 -->
-    <div class="left">
-        <img class="avatar" src="https://picsum.photos/id/1005/300/300" alt="头像">
-        <h1>👋 我是王冠东</h1>
-        <p>🎻 美声演唱爱好者</p>
-        <p>🎵 古筝玩家 | 音乐学习者</p>
-        <p>欢迎来到我的音乐小天地</p>
-
-        <div class="music-card">
-            <img class="music-cover" src="https://picsum.photos/id/1005/150/150" alt="音乐封面">
-            <h3>我的音乐分享</h3>
-            <audio controls>
-                <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
-                你的浏览器不支持音频播放。
-            </audio>
-        </div>
+<div class="wrapper">
+    <!-- 顶部导航 -->
+    <div class="navbar">
+        <div class="logo">🎵 王冠东的小世界</div>
     </div>
 
-    <!-- 右侧：聊天室 -->
-    <div class="right">
-        <h2>💬 公共聊天室</h2>
-        <div id="chatBox"></div>
+    <!-- 主体内容 -->
+    <div class="main">
+        <!-- 左侧：个人信息 -->
+        <div class="card">
+            <img class="avatar" src="https://picsum.photos/id/1005/300/300" alt="王冠东">
+            <h1 class="title">👋 你好，我是王冠东</h1>
+            <p class="desc">🎻 美声演唱爱好者 | 古筝玩家 | 音乐学习者</p>
+            <p class="desc">欢迎来到我的音乐小天地 ~</p>
 
-        <div class="chat-input">
-            <input type="text" id="username" placeholder="输入昵称">
-            <input type="text" id="msgInput" placeholder="输入消息...">
-            <button id="sendBtn">发送</button>
+            <div class="music-box">
+                <img class="music-cover" src="https://picsum.photos/id/1005/150/150" alt="音乐封面">
+                <h3 style="margin-bottom:14px; color:#374151;">我的音乐分享</h3>
+                <audio controls>
+                    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+                    你的浏览器不支持音频播放。
+                </audio>
+            </div>
+        </div>
+
+        <!-- 右侧：聊天室 -->
+        <div class="chat-card">
+            <h2 class="chat-title">💬 公共聊天室</h2>
+            <div id="chatBox"></div>
+
+            <div class="chat-input-group">
+                <input type="text" id="username" placeholder="输入昵称">
+                <input type="text" id="msgInput" placeholder="输入消息...">
+                <button id="sendBtn">发送</button>
+            </div>
         </div>
     </div>
 </div>
@@ -242,15 +274,15 @@
 
     // 添加消息
     function addMsg(name, text, isSelf = false) {
-        const item = document.createElement('div');
-        item.className = 'msg-item ' + (isSelf ? 'msg-self' : 'msg-other');
+        const msg = document.createElement('div');
+        msg.className = 'msg ' + (isSelf ? 'me' : 'other');
 
         const bubble = document.createElement('div');
-        bubble.className = 'msg-bubble';
+        bubble.className = 'bubble';
         bubble.innerHTML = `<strong>${name}</strong>：${text}`;
 
-        item.appendChild(bubble);
-        chatBox.appendChild(item);
+        msg.appendChild(bubble);
+        chatBox.appendChild(msg);
         chatBox.scrollTop = chatBox.scrollHeight;
     }
 
